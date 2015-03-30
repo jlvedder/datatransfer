@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+    $(document).ready(function(){
+
+        $("#message_transmission_area").hide();
+
+        var socket = io.connect('http://54.68.151.77:8080/');
+
+        socket.on("server_connected", function() {
+
+            console.log("Connection made.");
+
+        });
+
+        var username = "guest";
+
+        $("#set_username").click(function() {
+
+          username = $('#username').val();
+          $("#message_transmission_area").show();
+          $("#welcome_message").text("Welcome, " + username + "!");
+          socket.emit('username_set', username);
+        });
+
+        $("#send_message").click(function() {
+
+          console.log($("#message").val());
+          socket.emit('new_message_sent', "<b>" + username + ":</b> " + $("#message").val());
+
+        });
+
+        socket.on('history_found', function(chat_history) {
+
+          $('#messages_received').html(chat_history);
+
+        });
+
+        socket.on('message_update', function(new_message) {
+
+          $('#messages_received').append(new_message + "<br>");
+
+        });
+
+        socket.on('usernames', function(usernames) {
+
+          $('#usernames').html(usernames);
+
+        });
+
+
+
+    });
+
+</script>
+</head>
+
+<h1 id="welcome_message">Welcome!</h1>
+
+  <br>
+
+  <input type="text" id="username">
+  <button id="set_username">Set Username</button>
+
+  <br>
+
+  <div id="message_transmission_area">
+    <input type="text" id="message">
+    <button id="send_message">Send Message</button>
+  </div>
+
+  <br>
+  <br>
+
+  <h2>People connected:</h2>
+  <br>
+  <div id="usernames"></div>
+
+  <br>
+  <br>
+
+  <div id="messages_received"></div>
+
+
