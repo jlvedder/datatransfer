@@ -6,7 +6,7 @@ http.createServer(function(request, response) {
   response.write("A top notch app, indeed.\n");
   response.write(process.env.PORT);
   response.end();
-}).listen(process.env.PORT || 8888);
+}).listen(8080);
 
 console.log("Run attempt.");
 console.log(process.env.PORT);
