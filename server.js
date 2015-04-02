@@ -24,7 +24,7 @@ var server = http.createServer(function (req, res) {
 
 }).listen(8080);
 
-console.log('Server running at http://54.68.151.77:8080/');
+console.log('Server running at http://54.68.151.77:8080/; test update.');
 
 // The above lines of code basically set up a local server for us to access.
 
